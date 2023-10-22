@@ -43,3 +43,22 @@ const changeNavAll = () => {
 
 const rollNavElement = document.querySelector('.rollout-nav');
 rollNavElement.addEventListener('click', changeNavAll);
+
+document.querySelectorAll('.drink_form').forEach((item) => {
+  item.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formElement = event.target;
+    const id = formElement.querySelector('input').value;
+
+    await fetch(`http://localhost:4000/api/drinks/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify([{ op: 'replace', path: '/ordered', value: true }]),
+    });
+
+    window.location.reload();
+  });
+});
